@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+    http://www.springframework.org/schema/oxm
+    http://www.springframework.org/schema/oxm/spring-oxm-4.2.xsd
+	">
+	<context:annotation-config />
+
+	<!-- 启动包扫描功能，以便注册带有@Controller、@Service、@repository、@Component等注解的类成为spring的bean -->
+	<context:component-scan base-package="com.hdy" />
+
+	<!-- 用于页面跳转,根据请求的不同跳转到不同页面，如请求index.do则跳转到/WEB-INF/jsp/index.jsp -->
+	<bean id="findJsp"
+		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="index.do">findJsp</prop><!-- 表示index.do转向index.jsp页面 -->
+				<prop key="first.do">findJsp</prop><!-- 表示first.do转向first.jsp页面 -->
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射 -->
+	<mvc:annotation-driven>
+		<!-- <mvc:message-converters register-defaults="true"> 配置Fastjson支持 <bean 
+			class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"> 
+			<property name="supportedMediaTypes"> <list> <value>text/html;charset=UTF-8</value> 
+			<value>application/json</value> </list> </property> <property name="features"> 
+			<list> <value>WriteMapNullValue</value> <value>QuoteFieldNames</value> </list> 
+			</property> </bean> </mvc:message-converters> -->
+	</mvc:annotation-driven>
+
+
+	<!-- 对静态资源文件的访问 不支持访问WEB-INF目录 -->
+	<mvc:default-servlet-handler />
+	<!-- 对静态资源文件的访问 支持访问WEB-INF目录 -->
+	<!-- <mvc:resources location="/uikit-2.3.1/" mapping="/uikit-2.3.1/**" /> -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+
+
+	<bean id="cnManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<!-- 这里是否忽略掉accept header，默认就是false -->
+		<property name="ignoreAcceptHeader" value="true" />
+		<property name="favorPathExtension" value="true" />
+		<!-- 如果所有的mediaType都没匹配上，就会使用defaultContentType -->
+		<property name="defaultContentType" value="text/html" />
+		<property name="favorParameter" value="true" />
+		<property name="mediaTypes">
+			<map>
+				<entry key="xml" value="application/xml" />
+				<entry key="json" value="application/json" />
+				<entry key="xls" value="application/vnd.ms-excel" />
+			</map>
+		</property>
+	</bean>
+	<!-- 视图解析2,ContentNegotiatingViewResolver视图解析器,利用他就可以配置多种返回值 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager" ref="cnManager" />
+		<property name="viewResolvers">
+			<list>
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+		<!-- 默认使用MappingJacksonJsonView生成jsonview -->
+		<property name="defaultViews">
+			<list>
+				<bean id="jsonView"
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+				<bean id="xmlView"
+					class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<constructor-arg>
+						<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+							<property name="classesToBeBound">
+								<list>
+									<value>com.hdy.base.ReturnBean</value>
+								</list>
+							</property>
+						</bean>
+					</constructor-arg>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 视图解析1,返回的视图模型数据需要经过jstl来处理 -->
+	<!--<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" 
+		/> <property name="prefix" value="/WEB-INF/jsp/" /> <property name="suffix" 
+		value=".jsp" /> </bean> -->
+
+
+	<!-- 输出对象转JSON支持 -->
+	<bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+	<bean id="stringConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置MultipartResolver 用于文件上传 使用spring的CommosMultipartResolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="maxUploadSize" value="31457280" />
+		<property name="maxInMemorySize" value="40960" />
+		<property name="uploadTempDir" value="tempFiles" />
+	</bean>
+
+
+</beans>

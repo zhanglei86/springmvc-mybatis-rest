@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<!-- Spring的log4j监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<!-- listener -->
+	<listener>
+		<description>Spring监听器</description>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 字符集 过滤器 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 设置Spring容器加载配置文件路径 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring.xml,classpath:spring-jdbc.xml</param-value>
+	</context-param>
+
+	<!-- Either @WebServlet annotation in class or servlet mapping in web.xml -->
+	<!-- <servlet> <servlet-name>UserServlet</servlet-name> <servlet-class>com.hdy.controller.UserServlet</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>UserServlet</servlet-name> <url-pattern>/UserServlet</url-pattern> 
+		</servlet-mapping> -->
+
+
+	<!-- Spring MVC DispatcherServlet -->
+	<servlet>
+		<servlet-name>springMVC100</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springMVC-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springMVC100</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description></description>
+		<display-name>ServletDemo</display-name>
+		<servlet-name>ServletDemo</servlet-name>
+		<servlet-class>ServletDemo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletDemo</servlet-name>
+		<url-pattern>/ServletDemo</url-pattern>
+	</servlet-mapping>
+	<!-- error -->
+	<!-- <error-page> <error-code>400</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>401</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>402</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>403</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>404</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>407</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>415</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>500</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>501</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>502</error-code> <location>/error/404.json</location> 
+		</error-page> <error-page> <error-code>503</error-code> <location>/error/404.json</location> 
+		</error-page> -->
+
+	<!-- 解决HTTP PUT请求Spring无法获取请求参数的问题 -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>SpringMvcMaven</servlet-name>
+	</filter-mapping>
+
+	<!-- index.jsp -->
+	<display-name>spring-rest</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

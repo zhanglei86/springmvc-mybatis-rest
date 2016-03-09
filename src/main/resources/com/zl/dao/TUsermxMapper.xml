@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.dao.TUsermxMapper">
+	<resultMap id="BaseResultMap" type="com.zl.model.TUsermx">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_sex" property="userSex" jdbcType="INTEGER" />
+		<result column="user_birthday" property="userBirthday"
+			jdbcType="DATE" />
+		<result column="user_salary" property="userSalary" jdbcType="DOUBLE" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.zl.model.TUsermx"
+		extends="BaseResultMap">
+		<result column="user_other" property="userOther" jdbcType="LONGVARBINARY" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		user_id, user_name, user_sex, user_birthday, user_salary
+	</sql>
+	<sql id="Blob_Column_List">
+		user_other
+	</sql>
+	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+		parameterType="com.zl.model.TUsermxExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_usermx
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.zl.model.TUsermxExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from t_usermx
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from t_usermx
+		where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_usermx
+		where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.zl.model.TUsermxExample">
+		delete from t_usermx
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.zl.model.TUsermx">
+		insert into t_usermx (user_id, user_name, user_sex,
+		user_birthday, user_salary, user_other
+		)
+		values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
+		#{userSex,jdbcType=INTEGER},
+		#{userBirthday,jdbcType=DATE}, #{userSalary,jdbcType=DOUBLE}, #{userOther,jdbcType=LONGVARBINARY}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.zl.model.TUsermx">
+		insert into t_usermx
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="userSex != null">
+				user_sex,
+			</if>
+			<if test="userBirthday != null">
+				user_birthday,
+			</if>
+			<if test="userSalary != null">
+				user_salary,
+			</if>
+			<if test="userOther != null">
+				user_other,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userSex != null">
+				#{userSex,jdbcType=INTEGER},
+			</if>
+			<if test="userBirthday != null">
+				#{userBirthday,jdbcType=DATE},
+			</if>
+			<if test="userSalary != null">
+				#{userSalary,jdbcType=DOUBLE},
+			</if>
+			<if test="userOther != null">
+				#{userOther,jdbcType=LONGVARBINARY},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.zl.model.TUsermxExample"
+		resultType="java.lang.Integer">
+		select count(*) from t_usermx
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update t_usermx
+		<set>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.userName != null">
+				user_name = #{record.userName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userSex != null">
+				user_sex = #{record.userSex,jdbcType=INTEGER},
+			</if>
+			<if test="record.userBirthday != null">
+				user_birthday = #{record.userBirthday,jdbcType=DATE},
+			</if>
+			<if test="record.userSalary != null">
+				user_salary = #{record.userSalary,jdbcType=DOUBLE},
+			</if>
+			<if test="record.userOther != null">
+				user_other = #{record.userOther,jdbcType=LONGVARBINARY},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update t_usermx
+		set user_id = #{record.userId,jdbcType=INTEGER},
+		user_name = #{record.userName,jdbcType=VARCHAR},
+		user_sex = #{record.userSex,jdbcType=INTEGER},
+		user_birthday = #{record.userBirthday,jdbcType=DATE},
+		user_salary = #{record.userSalary,jdbcType=DOUBLE},
+		user_other = #{record.userOther,jdbcType=LONGVARBINARY}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update t_usermx
+		set user_id = #{record.userId,jdbcType=INTEGER},
+		user_name = #{record.userName,jdbcType=VARCHAR},
+		user_sex = #{record.userSex,jdbcType=INTEGER},
+		user_birthday = #{record.userBirthday,jdbcType=DATE},
+		user_salary = #{record.userSalary,jdbcType=DOUBLE}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zl.model.TUsermx">
+		update t_usermx
+		<set>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userSex != null">
+				user_sex = #{userSex,jdbcType=INTEGER},
+			</if>
+			<if test="userBirthday != null">
+				user_birthday = #{userBirthday,jdbcType=DATE},
+			</if>
+			<if test="userSalary != null">
+				user_salary = #{userSalary,jdbcType=DOUBLE},
+			</if>
+			<if test="userOther != null">
+				user_other = #{userOther,jdbcType=LONGVARBINARY},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zl.model.TUsermx">
+		update t_usermx
+		set user_name = #{userName,jdbcType=VARCHAR},
+		user_sex = #{userSex,jdbcType=INTEGER},
+		user_birthday = #{userBirthday,jdbcType=DATE},
+		user_salary = #{userSalary,jdbcType=DOUBLE},
+		user_other = #{userOther,jdbcType=LONGVARBINARY}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zl.model.TUsermx">
+		update t_usermx
+		set user_name = #{userName,jdbcType=VARCHAR},
+		user_sex = #{userSex,jdbcType=INTEGER},
+		user_birthday = #{userBirthday,jdbcType=DATE},
+		user_salary = #{userSalary,jdbcType=DOUBLE}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+	<!-- ==============以下内容是根据自身业务扩展的内容======================= -->
+	<!-- select标签的id属性与UserMapper接口中定义的getAllUser方法要一模一样 -->
+	<select id="getAllUser" resultMap="BaseResultMap">
+		SELECT * FROM t_usermx order by user_birthday desc
+	</select>
+</mapper>

@@ -1,5 +1,5 @@
 
-mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false -DgroupId=com.hdy -DartifactId=springmvc-mybatis-rest
+mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false -DgroupId=com.zl -DartifactId=springmvc-mybatis-rest
 
 /*Create DATABASE db1;
 USE db1;

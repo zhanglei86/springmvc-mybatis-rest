@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.hdy.model.TUsermx;
-import com.hdy.service.UserServiceI;
+import com.zl.model.TUsermx;
+import com.zl.service.UserServiceI;
 
 public class MyBatisTest {
 

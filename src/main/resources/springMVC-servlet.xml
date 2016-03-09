@@ -15,7 +15,7 @@
 	<context:annotation-config />
 
 	<!-- 启动包扫描功能，以便注册带有@Controller、@Service、@repository、@Component等注解的类成为spring的bean -->
-	<context:component-scan base-package="com.hdy" />
+	<context:component-scan base-package="com.zl" />
 
 	<!-- 用于页面跳转,根据请求的不同跳转到不同页面，如请求index.do则跳转到/WEB-INF/jsp/index.jsp -->
 	<bean id="findJsp"
@@ -32,11 +32,11 @@
 
 	<!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射 -->
 	<mvc:annotation-driven>
-		<!-- <mvc:message-converters register-defaults="true"> 配置Fastjson支持 <bean 
-			class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"> 
-			<property name="supportedMediaTypes"> <list> <value>text/html;charset=UTF-8</value> 
-			<value>application/json</value> </list> </property> <property name="features"> 
-			<list> <value>WriteMapNullValue</value> <value>QuoteFieldNames</value> </list> 
+		<!-- <mvc:message-converters register-defaults="true"> 配置Fastjson支持 <bean
+			class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+			<property name="supportedMediaTypes"> <list> <value>text/html;charset=UTF-8</value>
+			<value>application/json</value> </list> </property> <property name="features">
+			<list> <value>WriteMapNullValue</value> <value>QuoteFieldNames</value> </list>
 			</property> </bean> </mvc:message-converters> -->
 	</mvc:annotation-driven>
 
@@ -90,7 +90,7 @@
 						<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 							<property name="classesToBeBound">
 								<list>
-									<value>com.hdy.base.ReturnBean</value>
+									<value>com.zl.base.ReturnBean</value>
 								</list>
 							</property>
 						</bean>
@@ -102,9 +102,9 @@
 
 
 	<!-- 视图解析1,返回的视图模型数据需要经过jstl来处理 -->
-	<!--<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"> 
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" 
-		/> <property name="prefix" value="/WEB-INF/jsp/" /> <property name="suffix" 
+	<!--<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"
+		/> <property name="prefix" value="/WEB-INF/jsp/" /> <property name="suffix"
 		value=".jsp" /> </bean> -->
 
 

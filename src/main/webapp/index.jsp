@@ -5,8 +5,9 @@
 <title>index.jsp</title>
 <body>
 	<h2>Hello World!</h2>
-	<h3>ljjifhiwp@(@!)</h3>
-	<h2>Hello World!</h2>
+	<p>
+		<a href="UserServlet">UserServlet</a>
+	</p>
 	<h5>zhanglei,zealous$#前海出现创新大赛</h5>
 	<p>
 		<a href="login.jsp">login页面</a>
